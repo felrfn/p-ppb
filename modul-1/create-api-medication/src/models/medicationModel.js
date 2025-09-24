@@ -1,14 +1,20 @@
 import { supabase } from "../config/supabaseClient.js";
 
 export const MedicationModel = {
-  async getAll() {
-    const { data, error } = await supabase.from("medications").select(`
-        id, sku, name, description, price, quantity,
-        category_id, supplier_id
-      `);
+  async getAll(from, to) {
+    const { data, error, count } = await supabase
+      .from("medications")
+      .select(
+        `
+      id, sku, name, description, price, quantity,
+      category_id, supplier_id
+    `,
+        { count: "exact" },
+      )
+      .range(from, to);
 
     if (error) throw error;
-    return data;
+    return { data, count };
   },
 
   async getById(id) {
@@ -49,10 +55,29 @@ export const MedicationModel = {
     return data[0];
   },
 
-  async remove(id) {
-    const { error } = await supabase.from("medications").delete().eq("id", id);
+  async searchByName(name, from, to) {
+    const { data, error, count } = await supabase
+      .from("medications")
+      .select(
+        `
+      id, sku, name, description, price, quantity,
+      category_id, supplier_id
+    `,
+        { count: "exact" },
+      )
+      .ilike("name", `%${name}%`)
+      .range(from, to);
 
     if (error) throw error;
-    return { success: true };
+    return { data, count };
+  },
+
+  async getTotal() {
+    const { data, error } = await supabase
+      .from("medications")
+      .select("id", { count: "exact" });
+
+    if (error) throw error;
+    return data.length;
   },
 };
