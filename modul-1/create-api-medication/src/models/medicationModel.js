@@ -82,16 +82,9 @@ export const MedicationModel = {
   },
 
   async remove(id) {
-    const { data, error } = await supabase
-      .from("medications")
-      .delete()
-      .eq("id", id);
+    const { error } = await supabase.from("medications").delete().eq("id", id);
 
     if (error) throw error;
-
-    if (data.length === 0) {
-      throw new Error("Medication not found");
-    }
-    return { message: "Deleted successfully", data };
+    return { message: "Deleted successfully" };
   },
 };
