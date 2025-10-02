@@ -1,20 +1,17 @@
-import { VitePWA } from 'vite-plugin-pwa';
-import { defineConfig } from 'vite';
-import tailwindcss from '@tailwindcss/vite';
-import react from '@vitejs/plugin-react';
+import { VitePWA } from "vite-plugin-pwa";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [
     react(),
-    VitePWA(),
-    tailwindcss(),
-    ({
-      registerType: 'autoUpdate',
+    VitePWA({
+      registerType: "autoUpdate",
       includeAssets: [
-        'favicon.ico',
-        'robots.txt',
-        'apple-touch-icon.png',
-        'LOGORN.png',
+        "favicon.ico",
+        "robots.txt",
+        "apple-touch-icon.png",
+        "LOGORN.png",
       ],
       injectRegister: false,
       pwaAssets: {
@@ -22,22 +19,22 @@ export default defineConfig({
         config: true,
       },
       manifest: {
-        name: 'Resep-Nusantara',
-        short_name: 'Resep-Nusantara',
-        description: 'Resep Makanan dan Minuman Indonesia',
-        theme_color: '#ffffff',
+        name: "Resep-Nusantara",
+        short_name: "Resep-Nusantara",
+        description: "Resep Makanan dan Minuman Indonesia",
+        theme_color: "#ffffff",
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
+        globPatterns: ["**/*.{js,css,html,svg,png,ico}"],
         cleanupOutdatedCaches: true,
         clientsClaim: true,
       },
       devOptions: {
         enabled: false,
-        navigateFallback: 'index.html',
+        navigateFallback: "index.html",
         suppressWarnings: true,
-        type: 'module',
+        type: "module",
       },
-    })
+    }),
   ],
 });
