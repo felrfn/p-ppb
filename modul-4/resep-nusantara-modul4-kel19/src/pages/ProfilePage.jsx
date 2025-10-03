@@ -1,17 +1,54 @@
-// src/pages/ProfilePage.jsx
+import React from "react";
+
+const GITHUB_USERNAME = "felrfn";
+const PROFILE_IMAGE_URL = `https://github.com/${GITHUB_USERNAME}.png`;
+
 export default function ProfilePage() {
   return (
-    <div className="p-4 md:p-8 pb-20 md:pb-8">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">
-          Profile Pengguna
+    <main
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "2rem",
+        background: "#f9fafb",
+      }}
+    >
+      <section
+        style={{
+          width: "100%",
+          maxWidth: 560,
+          background: "#fff",
+          borderRadius: 16,
+          boxShadow:
+            "0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05)",
+          padding: "2rem",
+          textAlign: "center",
+        }}
+      >
+        <img
+          src={PROFILE_IMAGE_URL}
+          width={160}
+          height={160}
+          style={{
+            width: 160,
+            height: 160,
+            borderRadius: "50%",
+            objectFit: "cover",
+            display: "block",
+            margin: "0 auto 1rem",
+            border: "3px solid #e5e7eb",
+          }}
+        />
+
+        <h1 style={{ margin: "0.5rem 0 0.25rem", fontSize: "1.75rem" }}>
+          Rafael Ardiansyah
         </h1>
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <p className="text-gray-600">
-            Konten halaman profile akan diisi di sini...
-          </p>
-        </div>
-      </div>
-    </div>
+        <p style={{ margin: 0, color: "#6b7280", fontSize: "1rem" }}>
+          NIM: 21120123120007
+        </p>
+      </section>
+    </main>
   );
 }
