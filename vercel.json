@@ -1,0 +1,5 @@
+{
+  "build": {
+    "ignoreCommand": "git diff --quiet HEAD^ HEAD -- modul-1/create-api-medication modul-4/resep-nusantara-modul4-kel19"
+  }
+}
