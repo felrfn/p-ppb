@@ -9,10 +9,9 @@ export const handleCreateItem = async (req, res) => {
       .json({ error: "customer_name and shoe_type are required" });
   }
 
-  const { data, error } = await itemModel.createItem({
-    customer_name,
-    shoe_type,
-  });
+  const newItemData = { customer_name, shoe_type };
+
+  const { data, error } = await itemModel.createItem(newItemData);
 
   if (error) {
     return res.status(500).json({ error: error.message });
@@ -48,7 +47,25 @@ export const handleGetItemById = async (req, res) => {
 
 export const handleUpdateItem = async (req, res) => {
   const { id } = req.params;
-  const { data, error } = await itemModel.updateItem(id, req.body);
+  const updates = { ...req.body };
+
+  const validStatuses = ["pending", "selesai"];
+
+  if (updates.status) {
+    updates.status = updates.status.toLowerCase();
+
+    if (!validStatuses.includes(updates.status)) {
+      return res.status(400).json({
+        error: 'Invalid status. Must be "pending" or "selesai"',
+      });
+    }
+
+    if (updates.status === "selesai") {
+      updates.exit_date = new Date().toISOString();
+    }
+  }
+
+  const { data, error } = await itemModel.updateItem(id, updates);
 
   if (error) {
     if (error.code === "PGRST116") {

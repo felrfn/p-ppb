@@ -15,7 +15,7 @@ export const getAllItems = async (status) => {
   let query = supabase.from(TABLE_NAME).select("*");
 
   if (status) {
-    query = query.eq("status", status);
+    query = query.ilike("status", status);
   }
 
   const { data, error } = await query.order("created_at", { ascending: false });
