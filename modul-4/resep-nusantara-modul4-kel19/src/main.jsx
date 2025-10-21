@@ -1,19 +1,20 @@
-// src/main.jsx
-import { StrictMode, useState } from 'react'
-import { createRoot } from 'react-dom/client'
-import SplashScreen from './pages/SplashScreen';
-import HomePage from './pages/HomePage';
-import MakananPage from './pages/MakananPage';
-import MinumanPage from './pages/MinumanPage';
-import ProfilePage from './pages/ProfilePage';
-import DesktopNavbar from './components/navbar/DesktopNavbar';
-import MobileNavbar from './components/navbar/MobileNavbar';
-import './index.css'
-import PWABadge from './PWABadge';
+import { StrictMode, useState } from "react";
+import { createRoot } from "react-dom/client";
+import { FavoritesProvider } from "./context/FavoritesContext";
+import SplashScreen from "./pages/SplashScreen";
+import HomePage from "./pages/HomePage";
+import MakananPage from "./pages/MakananPage";
+import MinumanPage from "./pages/MinumanPage";
+import ProfilePage from "./pages/ProfilePage";
+import FavoritePage from "./pages/FavoritePage";
+import DesktopNavbar from "./components/navbar/DesktopNavbar";
+import MobileNavbar from "./components/navbar/MobileNavbar";
+import "./index.css";
+import PWABadge from "./PWABadge";
 
 function AppRoot() {
   const [showSplash, setShowSplash] = useState(true);
-  const [currentPage, setCurrentPage] = useState('home');
+  const [currentPage, setCurrentPage] = useState("home");
 
   const handleSplashComplete = () => {
     setShowSplash(false);
@@ -25,13 +26,15 @@ function AppRoot() {
 
   const renderCurrentPage = () => {
     switch (currentPage) {
-      case 'home':
+      case "home":
         return <HomePage />;
-      case 'makanan':
+      case "makanan":
         return <MakananPage />;
-      case 'minuman':
+      case "minuman":
         return <MinumanPage />;
-      case 'profile':
+      case "favorites":
+        return <FavoritePage />;
+      case "profile":
         return <ProfilePage />;
       default:
         return <HomePage />;
@@ -44,15 +47,10 @@ function AppRoot() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Desktop Navbar */}
       <DesktopNavbar currentPage={currentPage} onNavigate={handleNavigation} />
-      
-      {/* Main Content */}
-      <main className="min-h-screen">
-        {renderCurrentPage()}
-      </main>
-      
-      {/* Mobile Navbar */}
+
+      <main className="min-h-screen">{renderCurrentPage()}</main>
+
       <MobileNavbar currentPage={currentPage} onNavigate={handleNavigation} />
 
       <PWABadge />
@@ -60,8 +58,11 @@ function AppRoot() {
   );
 }
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <AppRoot />
+    <FavoritesProvider>
+      {" "}
+      <AppRoot />
+    </FavoritesProvider>
   </StrictMode>,
-)
+);

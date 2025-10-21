@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { ResepMinuman } from "../data/minuman";
-import RecipeGrid from "../components/minuman/RecipeGrid";
+import RecipeGrid from "../components/makanan/RecipeGrid";
 import RecipeDetailModal from "../components/RecipeDetailModal";
 import SearchBar from "../components/common/SearchBar";
 import Pagination from "../components/common/Pagination";
@@ -14,12 +14,25 @@ export default function MinumanPage() {
 
   const pageSize = 3;
 
-  const allMinuman = useMemo(() => Object.values(ResepMinuman.resep || {}), []);
+  const allMinuman = useMemo(
+    () =>
+      Object.entries(ResepMinuman.resep || {}).map(([key, value]) => ({
+        ...value,
+        uniqueId: `minuman-${key}`,
+      })),
+    [],
+  );
 
   useEffect(() => {
     const lower = searchQuery.trim().toLowerCase();
     const filtered = lower
-      ? allMinuman.filter((recipe) => recipe.name.toLowerCase().includes(lower))
+      ? allMinuman.filter((recipe) => {
+          const nameMatch = recipe.name.toLowerCase().includes(lower);
+          const ingredientsMatch = recipe.ingredients.some((ingredient) =>
+            ingredient.toLowerCase().includes(lower),
+          );
+          return nameMatch || ingredientsMatch;
+        })
       : allMinuman;
 
     setFilteredRecipes(filtered);
@@ -45,7 +58,7 @@ export default function MinumanPage() {
   const pageData = filteredRecipes.slice(start, start + pageSize);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-cyan-50 pb-20 md:pb-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 pb-20 md:pb-8">
       <main className="max-w-7xl mx-auto px-4 md:px-8 py-8 md:py-12">
         <SearchBar
           value={searchQuery}

@@ -1,12 +1,12 @@
-// src/components/MobileNavbar.jsx
-import { Home, ChefHat, Coffee, User } from 'lucide-react';
+import { Home, ChefHat, Coffee, User, Heart } from "lucide-react";
 
 export default function MobileNavbar({ currentPage, onNavigate }) {
   const navItems = [
-    { id: 'home', label: 'Beranda', icon: Home },
-    { id: 'makanan', label: 'Makanan', icon: ChefHat },
-    { id: 'minuman', label: 'Minuman', icon: Coffee },
-    { id: 'profile', label: 'Profile', icon: User }
+    { id: "home", label: "Beranda", icon: Home },
+    { id: "makanan", label: "Makanan", icon: ChefHat },
+    { id: "minuman", label: "Minuman", icon: Coffee },
+    { id: "favorites", label: "Favorit", icon: Heart },
+    { id: "profile", label: "Profile", icon: User },
   ];
 
   return (
@@ -15,23 +15,24 @@ export default function MobileNavbar({ currentPage, onNavigate }) {
         {navItems.map((item) => {
           const IconComponent = item.icon;
           const isActive = currentPage === item.id;
-          
+
           return (
             <button
               key={item.id}
               onClick={() => onNavigate(item.id)}
               className={`flex flex-col items-center py-2 px-3 transition-colors duration-200 ${
-                isActive ? 'text-blue-600' : 'text-gray-400'
+                isActive ? "text-blue-600" : "text-gray-400"
               }`}
             >
-              <IconComponent 
-                size={20} 
+              <IconComponent
+                size={20}
                 className="mb-1"
+                fill={
+                  item.id === "favorites" && isActive ? "currentColor" : "none"
+                }
                 strokeWidth={isActive ? 2 : 1.5}
               />
-              <span className="text-xs font-medium">
-                {item.label}
-              </span>
+              <span className="text-xs font-medium">{item.label}</span>
             </button>
           );
         })}
