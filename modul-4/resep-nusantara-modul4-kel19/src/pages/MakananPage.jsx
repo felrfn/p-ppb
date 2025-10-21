@@ -14,12 +14,25 @@ export default function MakananPage() {
 
   const pageSize = 3;
 
-  const allMakanan = useMemo(() => Object.values(ResepMakanan.resep || {}), []);
+  const allMakanan = useMemo(
+    () =>
+      Object.entries(ResepMakanan.resep || {}).map(([key, value]) => ({
+        ...value,
+        uniqueId: `makanan-${key}`,
+      })),
+    [],
+  );
 
   useEffect(() => {
     const lower = searchQuery.trim().toLowerCase();
     const filtered = lower
-      ? allMakanan.filter((recipe) => recipe.name.toLowerCase().includes(lower))
+      ? allMakanan.filter((recipe) => {
+          const nameMatch = recipe.name.toLowerCase().includes(lower);
+          const ingredientsMatch = recipe.ingredients.some((ingredient) =>
+            ingredient.toLowerCase().includes(lower),
+          );
+          return nameMatch || ingredientsMatch;
+        })
       : allMakanan;
 
     setFilteredRecipes(filtered);
